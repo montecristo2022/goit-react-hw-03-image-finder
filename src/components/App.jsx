@@ -1,3 +1,7 @@
+import FindPictures from "./FindPictures/FindPictures";
+
+
+
 export const App = () => {
   return (
     <div
@@ -10,7 +14,12 @@ export const App = () => {
         color: '#010101'
       }}
     >
-      boom boom boom kiska trah
+     <div>
+
+    <FindPictures/>
+    
+    </div>
+
     </div>
   );
 };
