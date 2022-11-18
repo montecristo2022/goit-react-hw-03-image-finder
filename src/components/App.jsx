@@ -1,25 +1,25 @@
-import FindPictures from "./FindPictures/FindPictures";
+import React, { Component } from 'react'
+import PictureFetchInfo from './PictureFetchInfo/PictureFetchInfo';
 
+import Searchbar from './Searchbar/Searchbar'
 
+export default class App extends Component {
 
-export const App = () => {
-  return (
-    <div
-      style={{
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontSize: 40,
-        color: '#010101'
-      }}
-    >
-     <div>
+  state = {
+    pictureName: '',
+  };
 
-    <FindPictures/>
-    
-    </div>
+handleFormSubmit = (pictureName) => {
+this.setState({pictureName: pictureName})
+}
 
-    </div>
-  );
-};
+  render() {
+    return (
+      <>
+      <Searchbar onSubmit={this.handleFormSubmit}/>
+       {/* выше рандомное название пропа. Я не вешаю на этот компонент метод */}
+     <PictureFetchInfo pictureName={this.state.pictureName}/>
+      </>
+    )
+  }
+}
