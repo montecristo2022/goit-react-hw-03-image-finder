@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import styles from '../Searchbar/Searchbar.module.css'
 
 export default class Searchbar extends Component {
   state = {
@@ -24,14 +25,14 @@ export default class Searchbar extends Component {
 
   render() {
     return (
-      <header class="searchbar">
-        <form class="form" onSubmit={this.handleSubmit}>
-          <button type="submit" class="button">
-            <span class="button-label">Search</span>
+      <header className={styles.header}>
+        <form className={styles.form} onSubmit={this.handleSubmit}>
+          <button className={styles.button} type="submit">
+           Поиск
           </button>
 
           <input
-            class="input"
+          className={styles.input}
             type="text"
             autoComplete="off"
             autoFocus
@@ -45,5 +46,4 @@ export default class Searchbar extends Component {
   }
 }
 
-// APIKEY = '31403834-67d7794be9df50ce2ee75ea48';
-// `https://pixabay.com/api/?key=${this.APIKEY}&q=${this.state.value}&image_type=photo`
+

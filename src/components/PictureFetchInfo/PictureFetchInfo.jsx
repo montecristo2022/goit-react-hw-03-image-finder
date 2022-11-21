@@ -1,14 +1,23 @@
 import React, { Component } from 'react';
+import PictureErrorView from 'components/PictureErrorView/PictureErrorView';
+import ImageGallery from 'components/ImageGallery/ImageGallery';
+import Loader from 'Loader/Loader';
+import ButtonLoadMore from 'components/ButtnoLoadMore/ButtonLoadMore';
 
 export default class PictureFetchInfo extends Component {
   state = {
     picture: null,
-
     error: null,
     status: 'idle',
+    page: 1,
+    perPage: 12,
   };
 
   API_KEY = '31403834-67d7794be9df50ce2ee75ea48';
+
+
+
+
 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.pictureName !== this.props.pictureName) {
@@ -18,15 +27,18 @@ export default class PictureFetchInfo extends Component {
 
       setTimeout(() => {
         fetch(
-          `https://pixabay.com/api/?key=${this.API_KEY}&q=${this.props.pictureName}&image_type=photo`
+          `https://pixabay.com/api/?key=${this.API_KEY}&q=${this.props.pictureName}&image_type=photo&page=${this.state.page}&per_page=${this.state.perPage}`
         )
           .then(response => {
-            console.log(response);
-            if (response.ok) {
-              return response.json();
+            return response.json();
+          })
+          .then(data => {
+            if (data.total > 0) {
+              return data;
             }
-
-            return Promise.reject(new Error('Нет таких картинок!'));
+            return Promise.reject(
+              new Error(`нет картинок по запросу ${this.props.pictureName}`)
+            );
           })
           .then(picture => {
             console.log(picture);
@@ -39,40 +51,36 @@ export default class PictureFetchInfo extends Component {
     }
   }
 
+
+changePage = () => {
+    this.setState(prevState => {
+        return {page: prevState.page + 1}
+    })
+    console.log(this.state.page)
+}
+
+
   render() {
-    const { picture, error, status } = this.state;
+    const { picture, error, status, page, perPage } = this.state;
 
     if (status === 'idle') {
       return <div>Введите имя картинки, которую хотите найти</div>;
     }
 
     if (status === 'pending') {
-      return <div>Загружаем...</div>;
+      return <Loader />;
     }
 
     if (status === 'rejected') {
-      return (
-        <>
-          <h2>{error.message}</h2>
-          <p>Попробуйте заново!</p>
-        </>
-      );
+      return <PictureErrorView message={error.message} />;
     }
 
     if (status === 'resolved') {
-      return (
-        <ul>
-          <li class="gallery-item">
-            <img
-              src={picture.hits[0].largeImageURL}
-              alt=""
-              width="400"
-              height="400"
-            />
-            <p>Загрузки: {picture.hits[0].downloads}</p>
-          </li>
-        </ul>
-      );
+      return  <>
+      <ImageGallery hits={picture.hits} />
+      {/* <ButtonLoadMore page={page}/> */}
+      <button onClick={this.changePage}>Загрузить еще котиков</button>
+      </>
     }
   }
 }
