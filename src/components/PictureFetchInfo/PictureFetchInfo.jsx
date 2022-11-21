@@ -21,17 +21,15 @@ export default class PictureFetchInfo extends Component {
           `https://pixabay.com/api/?key=${this.API_KEY}&q=${this.props.pictureName}&image_type=photo`
         )
           .then(response => {
-            console.log(response)
+            console.log(response);
             if (response.ok) {
               return response.json();
             }
 
-          
-
             return Promise.reject(new Error('Нет таких картинок!'));
           })
           .then(picture => {
-            console.log(picture)
+            console.log(picture);
             this.setState({ picture, status: 'resolved' });
           })
           .catch(error => {
@@ -65,8 +63,13 @@ export default class PictureFetchInfo extends Component {
       return (
         <ul>
           <li class="gallery-item">
-            <img src={picture.hits[0].largeImageURL} alt="" width='400' height='400'/>
-           <p>Загрузки: {picture.hits[0].downloads}</p>
+            <img
+              src={picture.hits[0].largeImageURL}
+              alt=""
+              width="400"
+              height="400"
+            />
+            <p>Загрузки: {picture.hits[0].downloads}</p>
           </li>
         </ul>
       );

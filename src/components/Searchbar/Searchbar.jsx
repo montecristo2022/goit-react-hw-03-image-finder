@@ -6,21 +6,21 @@ export default class Searchbar extends Component {
   };
 
   handleChange = event => {
-    this.setState({pictureName: event.currentTarget.value.toLowerCase()});
+    this.setState({ pictureName: event.currentTarget.value.toLowerCase() });
   };
 
-  handleSubmit = (event) => {
-    event.preventDefault()
+  handleSubmit = event => {
+    event.preventDefault();
 
-    if(this.state.pictureName === '') {
-alert('и как я узнаю что ты хочешь найти?')
-    return
+    if (this.state.pictureName === '') {
+      alert('и как я узнаю что ты хочешь найти?');
+      return;
     }
 
-    this.props.onSubmit(this.state.pictureName)
+    this.props.onSubmit(this.state.pictureName);
 
-    this.setState({pictureName: ''})
-  }
+    this.setState({ pictureName: '' });
+  };
 
   render() {
     return (
@@ -38,7 +38,6 @@ alert('и как я узнаю что ты хочешь найти?')
             placeholder="что хотите найти?"
             value={this.state.pictureName}
             onChange={this.handleChange}
-           
           />
         </form>
       </header>
