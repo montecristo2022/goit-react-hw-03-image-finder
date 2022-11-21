@@ -1,16 +1,12 @@
-// import React, { Component } from 'react'
+import React, { Component } from 'react'
 
-// export default class ButtonLoadMore extends Component {
-
-// showMore = () => {
-//     console.log(this.props.page)
- 
-// }
+export default class ButtonLoadMore extends Component {
 
 
-//   render() {
-//     return (
-//       <button type='button' onClick={this.showMore}>Загрузить еще</button>
-//     )
-//   }
-// }
+
+  render() {
+    return (
+      <button type='button' onClick={this.props.onClick}>Загрузить еще картинок...</button>
+    )
+  }
+}

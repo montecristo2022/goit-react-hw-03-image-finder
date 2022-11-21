@@ -21,6 +21,7 @@ export default class ImageGallery extends Component {
             );
           })}
         </ul>
+   
      </>
     )
   }

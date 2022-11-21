@@ -15,10 +15,6 @@ export default class PictureFetchInfo extends Component {
 
   API_KEY = '31403834-67d7794be9df50ce2ee75ea48';
 
-
-
-
-
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.pictureName !== this.props.pictureName) {
       console.log('не равно');
@@ -51,14 +47,12 @@ export default class PictureFetchInfo extends Component {
     }
   }
 
-
-changePage = () => {
+  changePage = () => {
     this.setState(prevState => {
-        return {page: prevState.page + 1}
-    })
-    console.log(this.state.page)
-}
-
+      return { page: prevState.page + 1 };
+    });
+    console.log(this.state.page);
+  };
 
   render() {
     const { picture, error, status, page, perPage } = this.state;
@@ -76,11 +70,13 @@ changePage = () => {
     }
 
     if (status === 'resolved') {
-      return  <>
-      <ImageGallery hits={picture.hits} />
-      {/* <ButtonLoadMore page={page}/> */}
-      <button onClick={this.changePage}>Загрузить еще котиков</button>
-      </>
+      return (
+        <>
+          <ImageGallery hits={picture.hits} />
+          <ButtonLoadMore  onClick={this.changePage}/>
+
+        </>
+      );
     }
   }
 }
