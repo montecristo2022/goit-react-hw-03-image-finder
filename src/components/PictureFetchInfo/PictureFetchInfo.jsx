@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PictureErrorView from 'components/PictureErrorView/PictureErrorView';
 import ImageGallery from 'components/ImageGallery/ImageGallery';
-import Loader from 'Loader/Loader';
+import Loader from 'components/Loader/Loader';
 import ButtonLoadMore from 'components/ButtnoLoadMore/ButtonLoadMore';
 
 export default class PictureFetchInfo extends Component {
@@ -16,6 +16,7 @@ export default class PictureFetchInfo extends Component {
   API_KEY = '31403834-67d7794be9df50ce2ee75ea48';
 
   componentDidUpdate(prevProps, prevState) {
+    console.log('обнова')
     if (prevProps.pictureName !== this.props.pictureName) {
       console.log('не равно');
 
