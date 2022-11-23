@@ -1,68 +1,30 @@
-
-
-
-
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import ImageGalleryItem from 'components/ImageGalleryItem/ImageGalleryItem';
 
 export default class ImageGallery extends Component {
-
-
-
-
   render() {
     return (
-        <>
+      <>
         <ul>
-          {this.props.hits.map(oneHit => {
+          {this.props.hits.map(({ id, webformatURL, largeImageURL, tags }) => {
+            // console.log(oneHit)
             return (
-              <li key={oneHit.id}>
-                <img src={oneHit.largeImageURL} alt="" width='400' height='400'/>
+              <li key={id}>
+                <ImageGalleryItem
+                 url={webformatURL}
+                 largeImageURL={largeImageURL}
+                 tag={tags}
+      
+                  openModal={this.props.onOpenModal}
+                
+                />
               </li>
             );
           })}
         </ul>
-   
-     </>
-    )
+      </>
+    );
   }
 }
 
 
-
-
-
-
-
-
-
-
-
-// export default function ImageGallery(hits, page) {
- 
-    
-  
-
-
-//   return (
-//  <>
-//     <ul>
-//       {hits.hits.map(oneHit => {
-//         return (
-//           <li key={oneHit.id}>
-//             <img src={oneHit.largeImageURL} alt="" width='400' height='400'/>
-//           </li>
-//         );
-//       })}
-//     </ul>
-
-//     <button onClick={loadMore}>Загрузить еще</button>
-//  </>
-
-//   );
-// }
-
-
-// function loadMore () {
-  
-
-// }

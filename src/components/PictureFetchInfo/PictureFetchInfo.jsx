@@ -3,6 +3,7 @@ import PictureErrorView from 'components/PictureErrorView/PictureErrorView';
 import ImageGallery from 'components/ImageGallery/ImageGallery';
 import Loader from 'components/Loader/Loader';
 import ButtonLoadMore from 'components/ButtnoLoadMore/ButtonLoadMore';
+import { Modal } from 'components/Modal/Modal';
 
 export default class PictureFetchInfo extends Component {
   state = {
@@ -11,40 +12,47 @@ export default class PictureFetchInfo extends Component {
     status: 'idle',
     page: 1,
     perPage: 12,
+    largeImage: '',
+  showModal: false,
+  tags: '',
+  totalImages: ''
   };
 
   API_KEY = '31403834-67d7794be9df50ce2ee75ea48';
 
   componentDidUpdate(prevProps, prevState) {
-    console.log('обнова')
-    if (prevProps.pictureName !== this.props.pictureName) {
+    console.log(`prevState.page:`, prevState.page);
+    console.log(`this.state.page:`, this.state.page);
+    if (
+      prevProps.pictureName !== this.props.pictureName ||
+      prevState.page !== this.state.page
+    ) {
       console.log('не равно');
 
       this.setState({ status: 'pending' });
 
-      setTimeout(() => {
-        fetch(
-          `https://pixabay.com/api/?key=${this.API_KEY}&q=${this.props.pictureName}&image_type=photo&page=${this.state.page}&per_page=${this.state.perPage}`
-        )
-          .then(response => {
-            return response.json();
-          })
-          .then(data => {
-            if (data.total > 0) {
-              return data;
-            }
-            return Promise.reject(
-              new Error(`нет картинок по запросу ${this.props.pictureName}`)
-            );
-          })
-          .then(picture => {
-            console.log(picture);
-            this.setState({ picture, status: 'resolved' });
-          })
-          .catch(error => {
-            this.setState({ error, status: 'rejected' });
-          });
-      }, 1000);
+      fetch(
+        `https://pixabay.com/api/?key=${this.API_KEY}&q=${this.props.pictureName}&image_type=photo&page=${this.state.page}&per_page=${this.state.perPage}`
+      )
+        .then(response => {
+          return response.json();
+        })
+        .then(data => {
+          if (data.total > 0) {
+            return data;
+          }
+          return Promise.reject(
+            new Error(`нет картинок по запросу ${this.props.pictureName}`)
+          );
+        })
+        .then(picture => {
+          console.log(picture);
+
+          this.setState({ picture, status: 'resolved' });
+        })
+        .catch(error => {
+          this.setState({ error, status: 'rejected' });
+        });
     }
   }
 
@@ -55,8 +63,22 @@ export default class PictureFetchInfo extends Component {
     console.log(this.state.page);
   };
 
+  openModal = (largeImageURL, tags) => {
+    this.toggleModal();
+    this.setState({
+      largeImageURL,
+      tags,
+    });
+  };
+
+  toggleModal = () => {
+    this.setState(({ showModal }) => ({
+      showModal: !showModal,
+    }));
+  };
+
   render() {
-    const { picture, error, status, page, perPage } = this.state;
+    const { picture, error, status, showModal, largeImageURL, tags } = this.state;
 
     if (status === 'idle') {
       return <div>Введите имя картинки, которую хотите найти</div>;
@@ -73,9 +95,16 @@ export default class PictureFetchInfo extends Component {
     if (status === 'resolved') {
       return (
         <>
-          <ImageGallery hits={picture.hits} />
-          <ButtonLoadMore  onClick={this.changePage}/>
+          <ImageGallery hits={picture.hits} onOpenModal={this.openModal} />
+          <ButtonLoadMore onClick={this.changePage} />
 
+          {showModal && (
+          <Modal
+            onModalClick={this.toggleModal}
+            largeImage={largeImageURL}
+            alt={tags}
+          />
+        )}
         </>
       );
     }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import styles from '../Searchbar/Searchbar.module.css'
+import styles from '../Searchbar/Searchbar.module.css';
 
 export default class Searchbar extends Component {
   state = {
@@ -28,11 +28,11 @@ export default class Searchbar extends Component {
       <header className={styles.header}>
         <form className={styles.form} onSubmit={this.handleSubmit}>
           <button className={styles.button} type="submit">
-           Поиск
+            Поиск
           </button>
 
           <input
-          className={styles.input}
+            className={styles.input}
             type="text"
             autoComplete="off"
             autoFocus
@@ -45,5 +45,3 @@ export default class Searchbar extends Component {
     );
   }
 }
-
-
