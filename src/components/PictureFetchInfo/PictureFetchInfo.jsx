@@ -21,18 +21,21 @@ export default class PictureFetchInfo extends Component {
   API_KEY = '31403834-67d7794be9df50ce2ee75ea48';
 
   componentDidUpdate(prevProps, prevState) {
-    console.log(`prevState.page:`, prevState.page);
-    console.log(`this.state.page:`, this.state.page);
+ 
+
+  
     if (
       prevProps.pictureName !== this.props.pictureName ||
-      prevState.page !== this.state.page
+  
+      prevProps.page !== this.props.page
     ) {
       console.log('не равно');
-
+      console.log(prevProps.page)
+      console.log(this.props.page)
       this.setState({ status: 'pending' });
 
       fetch(
-        `https://pixabay.com/api/?key=${this.API_KEY}&q=${this.props.pictureName}&image_type=photo&page=${this.state.page}&per_page=${this.state.perPage}`
+        `https://pixabay.com/api/?key=${this.API_KEY}&q=${this.props.pictureName}&image_type=photo&page=${this.props.page}&per_page=${this.state.perPage}`
       )
         .then(response => {
           return response.json();
@@ -56,12 +59,12 @@ export default class PictureFetchInfo extends Component {
     }
   }
 
-  changePage = () => {
-    this.setState(prevState => {
-      return { page: prevState.page + 1 };
-    });
-    console.log(this.state.page);
-  };
+  // changePage = () => {
+  //   this.setState(prevState => {
+  //     return { page: prevState.page + 1 };
+  //   });
+  //   console.log(this.state.page);
+  // };
 
   openModal = (largeImageURL, tags) => {
     this.toggleModal();
@@ -96,7 +99,8 @@ export default class PictureFetchInfo extends Component {
       return (
         <>
           <ImageGallery hits={picture.hits} onOpenModal={this.openModal} />
-          <ButtonLoadMore onClick={this.changePage} />
+          {/* <ButtonLoadMore onClick={this.changePage} /> */}
+          <ButtonLoadMore onClick={this.props.onClick} />
 
           {showModal && (
           <Modal
