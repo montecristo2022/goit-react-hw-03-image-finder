@@ -79,7 +79,6 @@ export default class PictureFetchInfo extends Component {
 
   render() {
     const {
-      picture,
       error,
       status,
       showModal,
