@@ -13,26 +13,24 @@ export default class PictureFetchInfo extends Component {
     page: 1,
     perPage: 12,
     largeImage: '',
-  showModal: false,
-  tags: '',
-  totalImages: ''
+    showModal: false,
+    tags: '',
+    photo: [],
+    searchTotal: null,
   };
 
   API_KEY = '31403834-67d7794be9df50ce2ee75ea48';
 
   componentDidUpdate(prevProps, prevState) {
- 
-
-  
     if (
       prevProps.pictureName !== this.props.pictureName ||
-  
       prevProps.page !== this.props.page
     ) {
       console.log('не равно');
-      console.log(prevProps.page)
-      console.log(this.props.page)
+      console.log(prevProps.page);
+      console.log(this.props.page);
       this.setState({ status: 'pending' });
+      // this.setState({ photo: [] });
 
       fetch(
         `https://pixabay.com/api/?key=${this.API_KEY}&q=${this.props.pictureName}&image_type=photo&page=${this.props.page}&per_page=${this.state.perPage}`
@@ -49,9 +47,12 @@ export default class PictureFetchInfo extends Component {
           );
         })
         .then(picture => {
-          console.log(picture);
-
+          console.log(picture.hits);
           this.setState({ picture, status: 'resolved' });
+          this.setState(prevState => ({
+            photo: [...prevState.photo, ...picture.hits],
+          }));
+  
         })
         .catch(error => {
           this.setState({ error, status: 'rejected' });
@@ -59,14 +60,10 @@ export default class PictureFetchInfo extends Component {
     }
   }
 
-  // changePage = () => {
-  //   this.setState(prevState => {
-  //     return { page: prevState.page + 1 };
-  //   });
-  //   console.log(this.state.page);
-  // };
+
 
   openModal = (largeImageURL, tags) => {
+    console.log(this.state.photo);
     this.toggleModal();
     this.setState({
       largeImageURL,
@@ -81,7 +78,8 @@ export default class PictureFetchInfo extends Component {
   };
 
   render() {
-    const { picture, error, status, showModal, largeImageURL, tags } = this.state;
+    const { picture, error, status, showModal, largeImageURL, tags } =
+      this.state;
 
     if (status === 'idle') {
       return <div>Введите имя картинки, которую хотите найти</div>;
@@ -103,12 +101,12 @@ export default class PictureFetchInfo extends Component {
           <ButtonLoadMore onClick={this.props.onClick} />
 
           {showModal && (
-          <Modal
-            onModalClick={this.toggleModal}
-            largeImage={largeImageURL}
-            alt={tags}
-          />
-        )}
+            <Modal
+              onModalClick={this.toggleModal}
+              largeImage={largeImageURL}
+              alt={tags}
+            />
+          )}
         </>
       );
     }
