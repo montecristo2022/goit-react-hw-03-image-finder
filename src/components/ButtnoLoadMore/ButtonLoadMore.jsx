@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 import React, { Component } from 'react';
 import styles from '../ButtnoLoadMore/ButtonLoadMore.module.css';
 
@@ -14,3 +16,7 @@ export default class ButtonLoadMore extends Component {
     );
   }
 }
+
+ButtonLoadMore.propTypes = {
+  onClick: PropTypes.func.isRequired,
+};

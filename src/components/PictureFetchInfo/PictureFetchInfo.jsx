@@ -22,6 +22,10 @@ export default class PictureFetchInfo extends Component {
   API_KEY = '31403834-67d7794be9df50ce2ee75ea48';
 
   componentDidUpdate(prevProps, prevState) {
+    if (prevProps.pictureName !== this.props.pictureName) {
+      this.setState({ photo: [] });
+    }
+
     if (
       prevProps.pictureName !== this.props.pictureName ||
       prevProps.page !== this.props.page
@@ -30,7 +34,6 @@ export default class PictureFetchInfo extends Component {
       console.log(prevProps.page);
       console.log(this.props.page);
       this.setState({ status: 'pending' });
-      // this.setState({ photo: [] });
 
       fetch(
         `https://pixabay.com/api/?key=${this.API_KEY}&q=${this.props.pictureName}&image_type=photo&page=${this.props.page}&per_page=${this.state.perPage}`
@@ -47,12 +50,12 @@ export default class PictureFetchInfo extends Component {
           );
         })
         .then(picture => {
-          console.log(picture.hits);
+          console.log(picture);
           this.setState({ picture, status: 'resolved' });
           this.setState(prevState => ({
             photo: [...prevState.photo, ...picture.hits],
+            searchTotal: picture.total,
           }));
-  
         })
         .catch(error => {
           this.setState({ error, status: 'rejected' });
@@ -60,10 +63,7 @@ export default class PictureFetchInfo extends Component {
     }
   }
 
-
-
   openModal = (largeImageURL, tags) => {
-    console.log(this.state.photo);
     this.toggleModal();
     this.setState({
       largeImageURL,
@@ -78,8 +78,16 @@ export default class PictureFetchInfo extends Component {
   };
 
   render() {
-    const { picture, error, status, showModal, largeImageURL, tags } =
-      this.state;
+    const {
+      picture,
+      error,
+      status,
+      showModal,
+      largeImageURL,
+      tags,
+      photo,
+      searchTotal,
+    } = this.state;
 
     if (status === 'idle') {
       return <div>Введите имя картинки, которую хотите найти</div>;
@@ -96,10 +104,12 @@ export default class PictureFetchInfo extends Component {
     if (status === 'resolved') {
       return (
         <>
-          <ImageGallery hits={picture.hits} onOpenModal={this.openModal} />
+          <ImageGallery hits={photo} onOpenModal={this.openModal} />
           {/* <ButtonLoadMore onClick={this.changePage} /> */}
-          <ButtonLoadMore onClick={this.props.onClick} />
 
+          {searchTotal / this.props.page > 12 && (
+            <ButtonLoadMore onClick={this.props.onClick} />
+          )}
           {showModal && (
             <Modal
               onModalClick={this.toggleModal}

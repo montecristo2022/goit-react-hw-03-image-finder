@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import ImageGalleryItem from 'components/ImageGalleryItem/ImageGalleryItem';
 
 export default class ImageGallery extends Component {
@@ -11,12 +12,10 @@ export default class ImageGallery extends Component {
             return (
               <li key={id}>
                 <ImageGalleryItem
-                 url={webformatURL}
-                 largeImageURL={largeImageURL}
-                 tag={tags}
-      
+                  url={webformatURL}
+                  largeImageURL={largeImageURL}
+                  tag={tags}
                   openModal={this.props.onOpenModal}
-                
                 />
               </li>
             );
@@ -27,4 +26,10 @@ export default class ImageGallery extends Component {
   }
 }
 
-
+ImageGallery.propTypes = {
+  hits: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+    })
+  )
+};

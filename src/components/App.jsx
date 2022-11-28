@@ -18,7 +18,6 @@ export default class App extends Component {
       return { page: prevState.page + 1 };
     });
     console.log(this.state.page);
-
   };
 
   render() {

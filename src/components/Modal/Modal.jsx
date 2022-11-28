@@ -25,11 +25,9 @@ export class Modal extends Component {
     const { largeImage, alt } = this.props;
 
     return (
- 
-
       <div className={styles.overlay} onClick={this.onBackDropClick}>
         <div className={styles.modal}>
-          <img src={largeImage} alt={alt}/>
+          <img src={largeImage} alt={alt} />
         </div>
       </div>
     );
