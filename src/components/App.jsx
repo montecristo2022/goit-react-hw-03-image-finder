@@ -59,10 +59,6 @@ export default class App extends Component {
           this.setState({ error, status: 'rejected' });
         });
     }
-
-
-
-    
   }
 
   openModal = (largeImageURL, tags) => {
