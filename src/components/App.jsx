@@ -116,23 +116,17 @@ export default class App extends Component {
           ''
         )}
 
-        {status === 'resolved' ? (
-          <>
-            {' '}
-            <ImageGallery hits={photo} onOpenModal={this.openModal} />
-            {searchTotal / page > 12 && (
-              <ButtonLoadMore onClick={this.changePage} />
-            )}
-            {showModal && (
-              <Modal
-                onModalClick={this.toggleModal}
-                largeImage={largeImageURL}
-                alt={tags}
-              />
-            )}
-          </>
-        ) : (
-          ''
+        <ImageGallery hits={photo} onOpenModal={this.openModal} />
+        {searchTotal / page > 12 && (
+          <ButtonLoadMore onClick={this.changePage} />
+        )}
+
+        {showModal && (
+          <Modal
+            onModalClick={this.toggleModal}
+            largeImage={largeImageURL}
+            alt={tags}
+          />
         )}
       </>
     );
