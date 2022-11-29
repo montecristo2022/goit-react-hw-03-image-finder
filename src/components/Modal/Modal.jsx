@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styles from '../Modal/Modal.module.css';
+import PropTypes from 'prop-types';
 
 export class Modal extends Component {
   componentDidMount() {
@@ -33,3 +34,10 @@ export class Modal extends Component {
     );
   }
 }
+
+
+Modal.prototypes = {
+  alt: PropTypes.string.isRequired,
+  largeImage: PropTypes.string.isRequired,
+  onModalClick: PropTypes.func.isRequired,
+};
