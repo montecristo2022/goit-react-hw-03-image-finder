@@ -11,7 +11,7 @@ export default class App extends Component {
   state = {
     pictureName: '',
     page: 1,
-    picture: null,
+    //  picture: null,
     error: null,
     status: 'idle',
     largeImage: '',
@@ -44,7 +44,7 @@ export default class App extends Component {
             return data;
           }
           return Promise.reject(
-            new Error(`нет картинок по запросу ${this.props.pictureName}`)
+            new Error(`нет картинок по запросу ${pictureName}`)
           );
         })
         .then(picture => {
@@ -108,8 +108,6 @@ export default class App extends Component {
           ''
         )}
 
-        {status === 'pending' ? <Loader /> : ''}
-
         {status === 'rejected' ? (
           <PictureErrorView message={error.message} />
         ) : (
@@ -117,8 +115,13 @@ export default class App extends Component {
         )}
 
         <ImageGallery hits={photo} onOpenModal={this.openModal} />
-        {searchTotal / page > 12 && (
+
+        {status === 'pending' ? <Loader /> : ''}
+
+        {searchTotal / page > 12 && status === 'resolved' ? (
           <ButtonLoadMore onClick={this.changePage} />
+        ) : (
+          ''
         )}
 
         {showModal && (
