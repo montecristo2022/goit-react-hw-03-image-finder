@@ -48,10 +48,19 @@ export default class App extends Component {
           );
         })
         .then(picture => {
-          console.log(picture);
+          const mappedImages = picture.hits.map(
+            ({ id, webformatURL, tags, largeImageURL }) => ({
+              id,
+              webformatURL,
+              tags,
+              largeImageURL,
+            })
+          );
+
           this.setState({ picture, status: 'resolved' });
+
           this.setState(prevState => ({
-            photo: [...prevState.photo, ...picture.hits],
+            photo: [...prevState.photo, ...mappedImages],
             searchTotal: picture.total,
           }));
         })
@@ -62,6 +71,7 @@ export default class App extends Component {
   }
 
   openModal = (largeImageURL, tags) => {
+    console.log(this.state.photo);
     this.toggleModal();
     this.setState({
       largeImageURL,
@@ -118,7 +128,9 @@ export default class App extends Component {
 
         {status === 'pending' ? <Loader /> : ''}
 
-        {searchTotal / page > 12 && status === 'resolved' ? (
+        {searchTotal / page > 12 &&
+        status === 'resolved' &&
+        photo.length > 0 ? (
           <ButtonLoadMore onClick={this.changePage} />
         ) : (
           ''
